@@ -61,7 +61,19 @@ def handler(signum, frame):
     print(Fore.RED)
     res = input("Desea detener el programa? (y/n): ")
     if res == 'y':
-        main()
+        ask = input("[*]Desea Borrar todos los sitios de la lista? (y/n): ")
+        if ask == 'y':
+            with open(ruta_host, "r+") as myfile:
+                content = myfile.readlines()
+                for line in content:
+                    if line.startswith('127.0.0.1 '):
+                        print(Fore.RED)
+                        print(line)
+                print("\nSitios Borrados Exitosamente")
+                input("\nPresiona Enter para Continuar!")
+                main()
+        else:
+            main()
     else:
         pass
 
@@ -71,6 +83,8 @@ def main1():
     busqueda = "127.0.0.1"
     lista_sitios = [
         "www.facebook.com",
+        "www.instagram.com",
+        "www.twitter.com",
     ]
     # Adding some sites manually.
     asking = str(input("[*]Deseas agregar mas sitios manualmente (y/n): "))
@@ -101,7 +115,8 @@ def main1():
         time.sleep(5)
         if tiempito(tiempito.now().year, tiempito.now().month, tiempito.now().day, desde_hr) < tiempito.now() < \
                 tiempito(tiempito.now().year, tiempito.now().month, tiempito.now().day, hasta_hr):
-            print("Bloqueando...")
+            print(Fore.GREEN)
+            print("\nBloqueando...")
             print(Fore.GREEN)
             print("Bloqueador de Sitios Activado!")
             with open(dir_host, 'r+') as myfile:
