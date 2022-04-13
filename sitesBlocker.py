@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-
+import os.path
 import time
 from datetime import datetime as tiempito
 from colorama import Fore, init
@@ -31,13 +31,18 @@ lista_sitios = []
 
 def main():
     # Backup for restoring the file.
-    rmtree(r"C:\Windows\System32\drivers\etc\hostsBackup")
-    mkdir(r"C:\Windows\System32\drivers\etc\hostsBackup")
-    copyfile(r"C:\Windows\System32\drivers\etc\hosts", r"C:\Windows\System32\drivers\etc\hostsBackup\hosts")
+    if os.path.exists(r"C:\Windows\System32\drivers\etc\hostsBackup"):
+        pass
+    else:
+        mkdir(r"C:\Windows\System32\drivers\etc\hostsBackup")
+        copyfile(r"C:\Windows\System32\drivers\etc\hosts", r"C:\Windows\System32\drivers\etc\hostsBackup\hosts")
+    #rmtree(r"C:\Windows\System32\drivers\etc\hostsBackup")
+    #mkdir(r"C:\Windows\System32\drivers\etc\hostsBackup")
     # os.system('cls')
-    print(Fore.LIGHTGREEN_EX)
+    print(Fore.CYAN)
     print(mybanner)
-    menu = """\n\t############### Opciones ###############\n\n1-Iniciar Script.\n2-Mostrar Lista de Sitios Bloqueados\n\n3-Salir."""
+    print(Fore.LIGHTGREEN_EX)
+    menu = """\n\t############### Opciones ###############\n\n1-Iniciar Script.\n2-Mostrar Lista de Sitios Bloqueados.\n3-Reiniciar Configuracion.\n\n4-Salir."""
     print(menu)
     ask = int(input("\n[*]Escoge una opcion: "))
     if ask == 1:
@@ -55,6 +60,9 @@ def main():
             input("\nPresione Enter para continuar!")
             main()
     elif ask == 3:
+        restart_config()
+    elif ask == 4:
+        print(Fore.RED)
         print("Saliendo del Programa!...")
         exit(0)
     elif ask == " ":
@@ -66,12 +74,24 @@ def main():
         main()
 
 
+def restart_config():
+    print(Fore.LIGHTCYAN_EX)
+    print("\nRestaurando Configuracion...")
+    time.sleep(3)
+    copyfile(r"C:\Windows\System32\drivers\etc\hostsBackup\hosts", r"C:\Windows\System32\drivers\etc\hosts")
+    print("\nConfiguracion Restaurada!")
+    input("\n\nPresiona Enter para Continuar!")
+    main()
+
+
 def handler(signum, frame):
     print(Fore.RED)
     res = input("Desea detener el programa? (y/n): ")
     if res == 'y':
-        ask = input("[*]Desea Borrar todos los sitios de la lista? (y/n): ")
+        print(Fore.YELLOW)
+        ask = input("\n[*]Desea Borrar todos los sitios de la lista? (y/n): ")
         if ask == 'y':
+            print(Fore.LIGHTRED_EX)
             with open(ruta_host, "r+") as myfile:
                 content = myfile.readlines()
                 for line in content:
