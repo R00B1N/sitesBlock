@@ -173,4 +173,22 @@ def main1():
 
 
 if __name__ == "__main__":
-    main()
+    i = 0
+    while i < 3:
+        print(Fore.YELLOW)
+        code = input("[*]Introduce el Codigo de Acceso: ")
+        if code == "b14ck001":
+            print(Fore.LIGHTGREEN_EX)
+            print("Accediendo...")
+            time.sleep(2)
+            main()
+        elif code != "b14ck001":
+            print(Fore.LIGHTRED_EX)
+            print("Codigo Incorrecto!")
+        else:
+            print("Introduce un Codigo Valido!")
+        i += 1
+        if i == 3:
+            print(Fore.RED)
+            print("\nDemasiados Intentos!")
+            exit(0)
