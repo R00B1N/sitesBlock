@@ -3,6 +3,8 @@
 import time
 from datetime import datetime as tiempito
 from colorama import Fore, init
+from shutil import copyfile, rmtree
+from os import mkdir
 import signal
 
 init()
@@ -28,10 +30,14 @@ lista_sitios = []
 
 
 def main():
+    # Backup for restoring the file.
+    rmtree(r"C:\Windows\System32\drivers\etc\hostsBackup")
+    mkdir(r"C:\Windows\System32\drivers\etc\hostsBackup")
+    copyfile(r"C:\Windows\System32\drivers\etc\hosts", r"C:\Windows\System32\drivers\etc\hostsBackup\hosts")
     # os.system('cls')
     print(Fore.LIGHTGREEN_EX)
     print(mybanner)
-    menu = """\n\t############### Opciones ###############\n\n1-Iniciar Script.\n2-Mostrar Lista de Sitios Bloqueados\n3-Excluir Sitios.\n\n4-Salir."""
+    menu = """\n\t############### Opciones ###############\n\n1-Iniciar Script.\n2-Mostrar Lista de Sitios Bloqueados\n\n3-Salir."""
     print(menu)
     ask = int(input("\n[*]Escoge una opcion: "))
     if ask == 1:
@@ -49,12 +55,15 @@ def main():
             input("\nPresione Enter para continuar!")
             main()
     elif ask == 3:
-        print("Coming soon...")
-    elif ask == 4:
         print("Saliendo del Programa!...")
         exit(0)
+    elif ask == " ":
+        print(Fore.RED)
+        print("\nOpcion no Valida!")
+        main()
     else:
         print("Introduce una opcion Valida!")
+        main()
 
 
 def handler(signum, frame):
@@ -69,6 +78,7 @@ def handler(signum, frame):
                     if line.startswith('127.0.0.1 '):
                         print(Fore.RED)
                         print(line)
+                copyfile(r"C:\Windows\System32\drivers\etc\hostsBackup\hosts", r"C:\Windows\System32\drivers\etc\hosts")
                 print("\nSitios Borrados Exitosamente")
                 input("\nPresiona Enter para Continuar!")
                 main()
@@ -139,7 +149,7 @@ def main1():
             with open(dir_host, 'r+') as myfile:
                 myfile.readlines()
                 myfile.seek(0)
-            time.sleep(2)
+            time.sleep(7)
 
 
 if __name__ == "__main__":
